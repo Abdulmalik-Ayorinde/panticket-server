@@ -29,7 +29,10 @@ export async function deleteEvent(req, res) {
 }
 export const updateEvent = async (req, res) => {
 	try {
-		const UpdateEvent = await Event.findByIdAndUpdate(req.params.id, req.body);
+		const UpdateEvent = await Event.findByIdAndUpdate(
+			req.params.id,
+			req.body
+		).populate('ticketTypes');
 		return res.status(201).json({
 			message: 'event Updated successfully',
 			event: UpdateEvent,

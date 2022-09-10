@@ -9,11 +9,26 @@ import {
 	updateEvent,
 	fetchSingleEvent,
 } from './controllers/event.controller';
-import { validateEventData } from './controllers/middleware/event.validator';
+import {
+	updateValidateEventData,
+	validateEventData,
+} from './controllers/middleware/event.validator';
 import { validateOrganizerData } from './controllers/middleware/organizer.validator';
-import { createOrganizer } from './controllers/organizer.controller';
+import {
+	createOrganizer,
+	deleteOrganizer,
+	fetchOrganizer,
+	fetchSingleOrganizer,
+	updateOrganizer,
+} from './controllers/organizer.controller';
 import { validateCategoryData } from './controllers/middleware/category.validator';
-import { createCategory } from './controllers/category.controller';
+import {
+	createCategory,
+	deleteCategory,
+	fetchCategory,
+	fetchSingleCategory,
+	updateCategory,
+} from './controllers/category.controller';
 import { validateticketTypeData } from './controllers/middleware/tickettype.validator';
 import {
 	createTicketType,
@@ -49,13 +64,21 @@ server.get('/event', fetchEvent);
 server.get('/event/:id', fetchSingleEvent);
 server.post('/event', validateEventData, createEvent);
 server.delete('/event/:id', deleteEvent);
-server.put('/event/:id', validateEventData, updateEvent);
+server.put('/event/:id', updateValidateEventData, updateEvent);
 
 // Organizer Routes
+server.get('/organizer', fetchOrganizer);
 server.post('/organizer', validateOrganizerData, createOrganizer);
+server.get('/organizer/:id', fetchSingleOrganizer);
+server.put('/organizer/:id', updateOrganizer);
+server.delete('/organizer/:id', deleteOrganizer);
 
 // Category Routes
+server.get('/category', fetchCategory);
 server.post('/category', validateCategoryData, createCategory);
+server.get('/category/:id', fetchSingleCategory);
+server.put('/category/:id', updateCategory);
+server.delete('/category/:id', deleteCategory);
 
 // Ticket-Type Routes
 server.get('/tickettype', fetchTicketType);
