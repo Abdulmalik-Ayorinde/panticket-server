@@ -58,7 +58,7 @@ server.use(
 let port = 4001;
 
 if (process.env.NODE_ENV !== 'development') {
-	port === process.env.PORT;
+	port = process.env.PORT;
 }
 
 server.get('/', homeController);
