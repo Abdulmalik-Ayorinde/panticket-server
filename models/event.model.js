@@ -13,6 +13,10 @@ const eventSchema = new Schema({
 	location: {
 		type: String,
 	},
+	image: {
+		default: null,
+		type: String,
+	},
 	price: {
 		type: Number,
 		default: 0,

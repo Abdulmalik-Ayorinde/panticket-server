@@ -8,7 +8,7 @@ const eventSchema = Joi.object({
 	time: Joi.string().required(),
 	isFeatured: Joi.boolean(),
 	description: Joi.string().required(),
-	ticketTypes: Joi.string().required(),
+	ticketTypes: Joi.array().items(Joi.string()),
 	organizer: Joi.string().required(),
 	category: Joi.string().required(),
 });
@@ -32,7 +32,7 @@ const updateEventSchema = Joi.object({
 	time: Joi.string(),
 	isFeatured: Joi.boolean(),
 	description: Joi.string(),
-	ticketTypes: Joi.string(),
+	ticketTypes: Joi.array().items(Joi.string()),
 	organizer: Joi.string(),
 	category: Joi.string(),
 });

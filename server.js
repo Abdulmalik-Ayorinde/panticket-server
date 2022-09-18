@@ -2,6 +2,9 @@ import express from 'express';
 import { homeController } from './controllers/home.controller';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
 	createEvent,
 	fetchEvent,
@@ -37,7 +40,25 @@ import {
 	fetchTicketType,
 	updateTicketType,
 } from './controllers/tickettype.controller';
+import {
+	createTicket,
+	fetchSingleTicket,
+	fetchTicket,
+} from './controllers/ticket.controller';
+import { validateTicketData } from './controllers/middleware/ticket.validator';
 dotenv.config();
+
+//multer init
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './tmp');
+	},
+	// filename: function (req, file, cb) {
+	// 	cb(null, file.originalname + '-' + uuidv4());
+	// },
+});
+
+const upload = multer({ storage: storage });
 
 // Event
 const connectToDB = () => mongoose.connect(process.env.DEV_DB);
@@ -66,7 +87,7 @@ server.get('/', homeController);
 // Event Routes
 server.get('/event', fetchEvent);
 server.get('/event/:id', fetchSingleEvent);
-server.post('/event', validateEventData, createEvent);
+server.post('/event', upload.single('image'), validateEventData, createEvent);
 server.delete('/event/:id', deleteEvent);
 server.put('/event/:id', updateValidateEventData, updateEvent);
 
@@ -90,6 +111,11 @@ server.get('/tickettype/:id', fetchSingleTicketType);
 server.post('/tickettype', validateticketTypeData, createTicketType);
 server.put('/tickettype/:id', updateTicketType);
 server.delete('/tickettype/:id', deleteTicketType);
+
+// Create Ticket
+server.post('/ticket', validateTicketData, createTicket);
+server.get('/ticket', fetchTicket);
+server.get('/ticket/:id', fetchSingleTicket);
 
 server.listen(port, () => {
 	console.log('server started and running on port ' + port);
